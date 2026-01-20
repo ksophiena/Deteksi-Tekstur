@@ -10,10 +10,10 @@ from skimage.feature import local_binary_pattern, graycomatrix
 # ======================================
 st.set_page_config(
     page_title="Deteksi Tekstur Citra",
-    layout="centered"
+    layout="wide"
 )
 
-st.title("📊 Deteksi Tekstur Citra (LBP, GLCM, FFT)")
+st.title("Deteksi Tekstur Citra (LBP, GLCM, FFT)")
 
 # ======================================
 # FUNGSI DASAR
@@ -69,7 +69,7 @@ def fft_table(gray):
 # INPUT GAMBAR
 # ======================================
 uploaded_file = st.file_uploader(
-    "📂 Upload citra (JPG / PNG)",
+    "Upload citra (JPG / PNG)",
     type=["jpg", "jpeg", "png"]
 )
 
@@ -80,28 +80,25 @@ if uploaded_file:
     # ===============================
     # CITRA ASLI
     # ===============================
-    st.subheader("🖼️ Citra Asli")
+    st.subheader("Citra Asli")
     st.image(img, use_container_width=True)
 
     # ===============================
     # LBP
     # ===============================
-    st.subheader("🔹 Local Binary Pattern (LBP)")
-    st.caption("Matriks nilai LBP hasil ekstraksi dari citra asli")
+    st.subheader("Local Binary Pattern (LBP)")
     st.dataframe(lbp_matrix(gray), use_container_width=True)
 
     # ===============================
     # GLCM
     # ===============================
     st.subheader("🔹 Gray Level Co-occurrence Matrix (GLCM)")
-    st.caption("Matriks GLCM (distance=1, angle=0°, level=4)")
     st.dataframe(glcm_matrix(gray), use_container_width=True)
 
     # ===============================
     # FFT
     # ===============================
     st.subheader("🔹 Fourier Transform")
-    st.caption("Tabel fitur domain frekuensi")
     st.dataframe(fft_table(gray), use_container_width=True)
 
 else:
