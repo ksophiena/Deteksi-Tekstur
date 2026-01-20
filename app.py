@@ -13,7 +13,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Deteksi Tekstur Citra (LBP, GLCM, FFT)")
+st.title("Deteksi Tekstur Citra (LBP & GLCM)")
 
 # ======================================
 # FUNGSI DASAR
@@ -54,18 +54,6 @@ def glcm_matrix(gray):
     return pd.DataFrame(matrix)
 
 # ======================================
-# FFT (Frequency Table)
-# ======================================
-def fft_table(gray):
-    # Contoh tabel domain frekuensi (sesuai slide dosen)
-    data = {
-        "rank": [1, 2, 3, 4],
-        "period_px": [10.119, 10.119, 10.119, 10.119],
-        "angle_spatial_deg": [18.43, 71.57, 161.57, 108.43]
-    }
-    return pd.DataFrame(data)
-
-# ======================================
 # INPUT GAMBAR
 # ======================================
 uploaded_file = st.file_uploader(
@@ -92,14 +80,8 @@ if uploaded_file:
     # ===============================
     # GLCM
     # ===============================
-    st.subheader("🔹 Gray Level Co-occurrence Matrix (GLCM)")
+    st.subheader(Gray Level Co-occurrence Matrix (GLCM)")
     st.dataframe(glcm_matrix(gray), use_container_width=True)
-
-    # ===============================
-    # FFT
-    # ===============================
-    st.subheader("🔹 Fourier Transform")
-    st.dataframe(fft_table(gray), use_container_width=True)
 
 else:
     st.info("Silakan upload citra untuk memulai.")
