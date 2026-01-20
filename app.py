@@ -75,13 +75,28 @@ if uploaded_file:
     # LBP
     # ===============================
     st.subheader("Local Binary Pattern (LBP)")
-    st.dataframe(lbp_matrix(gray), use_container_width=True)
+    lbp_df = lbp_matrix(gray)
+    lbp_df.columns = [""] * lbp_df.shape[1]
+
+    st.dataframe(
+        lbp_df,
+        hide_index=True,
+        use_container_width=True
+    )
 
     # ===============================
     # GLCM
     # ===============================
     st.subheader("Gray Level Co-occurrence Matrix (GLCM)")
     st.dataframe(glcm_matrix(gray), use_container_width=True)
+    glcm_df = glcm_matrix(gray)
+    glcm_df.columns = [""] * glcm_df.shape[1]
+
+    st.dataframe(
+        glcm_df,
+        hide_index=True,
+        use_container_width=True
+    )
 
 else:
     st.info("Silakan upload citra untuk memulai.")
