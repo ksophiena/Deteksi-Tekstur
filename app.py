@@ -80,7 +80,7 @@ if uploaded_file:
     # ===============================
     # GLCM
     # ===============================
-    st.subheader(Gray Level Co-occurrence Matrix (GLCM)")
+    st.subheader("Gray Level Co-occurrence Matrix (GLCM)")
     st.dataframe(glcm_matrix(gray), use_container_width=True)
 
 else:
