@@ -10,7 +10,7 @@ from skimage.feature import local_binary_pattern, graycomatrix
 # ======================================
 st.set_page_config(
     page_title="Deteksi Tekstur Citra",
-    layout="wide"
+    layout="centered"
 )
 
 st.title("Deteksi Tekstur Citra (LBP & GLCM)")
@@ -25,22 +25,23 @@ def to_gray(img):
     return cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
 # ======================================
-# LBP (Matrix)
+# LBP MATRIX
 # ======================================
 def lbp_matrix(gray):
     radius = 1
     n_points = 8 * radius
     lbp = local_binary_pattern(gray, n_points, radius, method="default")
 
-    # Ambil patch kecil supaya jadi matriks seperti contoh dosen
+    # ambil patch kecil supaya jadi matriks
     patch = lbp[:5, :5]
-    return pd.DataFrame(patch)
+    df = pd.DataFrame(patch)
+    return df
 
 # ======================================
-# GLCM (Matrix)
+# GLCM MATRIX
 # ======================================
 def glcm_matrix(gray):
-    gray_q = (gray / 64).astype(np.uint8)  # kuantisasi → 4 level
+    gray_q = (gray / 64).astype(np.uint8)  # kuantisasi 4 level
     glcm = graycomatrix(
         gray_q,
         distances=[1],
@@ -51,7 +52,8 @@ def glcm_matrix(gray):
     )
 
     matrix = glcm[:, :, 0, 0]
-    return pd.DataFrame(matrix)
+    df = pd.DataFrame(matrix)
+    return df
 
 # ======================================
 # INPUT GAMBAR
@@ -76,7 +78,7 @@ if uploaded_file:
     # ===============================
     st.subheader("Local Binary Pattern (LBP)")
     lbp_df = lbp_matrix(gray)
-    lbp_df.columns = [""] * lbp_df.shape[1]
+    lbp_df.columns = [""] * lbp_df.shape[1]  # hapus header
 
     st.dataframe(
         lbp_df,
@@ -88,9 +90,8 @@ if uploaded_file:
     # GLCM
     # ===============================
     st.subheader("Gray Level Co-occurrence Matrix (GLCM)")
-    st.dataframe(glcm_matrix(gray), use_container_width=True)
     glcm_df = glcm_matrix(gray)
-    glcm_df.columns = [""] * glcm_df.shape[1]
+    glcm_df.columns = [""] * glcm_df.shape[1]  # hapus header
 
     st.dataframe(
         glcm_df,
