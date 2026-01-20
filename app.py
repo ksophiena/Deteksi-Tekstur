@@ -24,24 +24,25 @@ def load_image(uploaded_file):
 def to_gray(img):
     return cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
+def show_matrix(df):
+    html = df.to_html(index=False, header=False)
+    st.markdown(html, unsafe_allow_html=True)
+
 # ======================================
-# LBP MATRIX
+# LBP
 # ======================================
 def lbp_matrix(gray):
     radius = 1
     n_points = 8 * radius
     lbp = local_binary_pattern(gray, n_points, radius, method="default")
-
-    # ambil patch kecil supaya jadi matriks
     patch = lbp[:5, :5]
-    df = pd.DataFrame(patch)
-    return df
+    return pd.DataFrame(patch)
 
 # ======================================
-# GLCM MATRIX
+# GLCM
 # ======================================
 def glcm_matrix(gray):
-    gray_q = (gray / 64).astype(np.uint8)  # kuantisasi 4 level
+    gray_q = (gray / 64).astype(np.uint8)
     glcm = graycomatrix(
         gray_q,
         distances=[1],
@@ -50,10 +51,7 @@ def glcm_matrix(gray):
         symmetric=True,
         normed=True
     )
-
-    matrix = glcm[:, :, 0, 0]
-    df = pd.DataFrame(matrix)
-    return df
+    return pd.DataFrame(glcm[:, :, 0, 0])
 
 # ======================================
 # INPUT GAMBAR
@@ -77,27 +75,13 @@ if uploaded_file:
     # LBP
     # ===============================
     st.subheader("Local Binary Pattern (LBP)")
-    lbp_df = lbp_matrix(gray)
-    lbp_df.columns = [""] * lbp_df.shape[1]  # hapus header
-
-    st.dataframe(
-        lbp_df,
-        hide_index=True,
-        use_container_width=True
-    )
+    show_matrix(lbp_matrix(gray))
 
     # ===============================
     # GLCM
     # ===============================
     st.subheader("Gray Level Co-occurrence Matrix (GLCM)")
-    glcm_df = glcm_matrix(gray)
-    glcm_df.columns = [""] * glcm_df.shape[1]  # hapus header
-
-    st.dataframe(
-        glcm_df,
-        hide_index=True,
-        use_container_width=True
-    )
+    show_matrix(glcm_matrix(gray))
 
 else:
     st.info("Silakan upload citra untuk memulai.")
